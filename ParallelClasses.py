@@ -30,23 +30,13 @@ class ParallelMultiCohort(MultiCohort):
         MultiCohort.__init__(self, ids, pop_size, therapy)
 
         # make cohorts
-        self.cohorts = []
-        for i in range(len(self.ids)):
-            # create a cohort
-            cohort = Cohort(id=self.ids[i],
-                            pop_size=self.popSize,
-                            parameters=self.paramSets[i])
-            # append the cohort
-            self.cohorts.append(cohort)
+
 
     def simulate(self, sim_length, n_processes=MAX_PROCESSES):
 
         # create a list of arguments for simulating the cohorts in parallel
-        args = [(cohort, sim_length) for cohort in self.cohorts]
 
         # simulate all cohorts in parallel
-        with mp.Pool(n_processes) as pl:
-            simulated_cohorts = pl.starmap(simulate_this_cohort, args)
 
         # outcomes from simulating all cohorts
         for cohort in simulated_cohorts:
